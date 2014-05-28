@@ -1,6 +1,8 @@
 #init.pp
 
-class factsdir ( $facts = { } ) {
+class factsdir ( $static_facts = {},
+                 $exec_facts = {},
+		 ) {
 
   # Create required directories
   file { ['/etc/facter','/etc/facter/facts.d']:
@@ -25,7 +27,9 @@ class factsdir ( $facts = { } ) {
   }
 
   # Create facts
-  validate_hash($facts)
-  create_resources(factsdir::fact, $facts)
+  validate_hash($static_facts)
+  create_resources(factsdir::static_fact, $static_facts)
+  validate_hash($exec_facts)
+  create_resources(factsdir::exec_fact, $exec_facts)
 
 }
